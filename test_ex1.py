@@ -2,6 +2,8 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_ex1():
     chrome_options = Options()
@@ -26,7 +28,9 @@ def test_ex1():
     driver.find_element(By.ID,"user-name").send_keys("standard_user")
     driver.find_element(By.ID,"password").send_keys("secret_sauce")
     driver.find_element(By.ID, "login-button").click()
-    time.sleep(10)
+    WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.CLASS_NAME, "title"))
+    )
     page_menu = driver.find_element(By.CLASS_NAME, "title").text
     assert page_menu == "Products"
     driver.quit()
